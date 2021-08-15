@@ -10,10 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GetLeadersByNameDAO {
-    private ArrayList<LeadersByName> leaders = new ArrayList<LeadersByName>();
-
     public ArrayList<LeadersByName> GetLeadersByName() throws SQLException {
         Connection connection = ConnectionJDBC.getConnection();
+        ArrayList<LeadersByName> leaders = new ArrayList<LeadersByName>();
 
         try {
             String query = "select ID_Lider, Nombre, Primer_Apellido " + "from Lider "

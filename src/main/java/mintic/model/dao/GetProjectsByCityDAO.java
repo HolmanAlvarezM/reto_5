@@ -10,10 +10,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GetProjectsByCityDAO {
-    private ArrayList<ProjectsByCity> projects = new ArrayList<ProjectsByCity>();
-
     public ArrayList<ProjectsByCity> GetProjectsByCity() throws SQLException {
         Connection connection = ConnectionJDBC.getConnection();
+        ArrayList<ProjectsByCity> projects = new ArrayList<ProjectsByCity>();
 
         try {
             String query = "select ID_Proyecto, Constructora, Ciudad, Estrato " + "from Proyecto p, Tipo t "
