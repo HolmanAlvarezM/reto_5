@@ -14,7 +14,12 @@ import mintic.model.vo.LeadersBySalary;
 import mintic.model.vo.ProjectsByCity;
 
 public class ViewQueries extends JFrame {
-    // public static final ViewQueries view = new ViewQueries();
+    private final Color BG_COLOR = new Color(5, 91, 117, 255);
+    private final Color PANEL_COLOR = new Color(2, 42, 54, 255);
+    private final Color FONT_COLOR = Color.WHITE;
+    private final Color BUTTON_COLOR = new Color(0, 150, 230, 255);
+    private final Font myFont = new Font("Verdana", Font.BOLD, 12);
+
     private Container _container;
     private ControllerReto5 _controller;
     private JTable contentTable;
@@ -27,8 +32,6 @@ public class ViewQueries extends JFrame {
     }
 
     private void CreateWindow() {
-        setTitle("Reto 5: SENTENCIAS SQL CON JAVA SWING");
-
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         int width = 800;
         int height = 600;
@@ -36,24 +39,22 @@ public class ViewQueries extends JFrame {
         int yPos = (int) size.getHeight() / 2 - height / 2;
         setBounds(xPos, yPos, width, height);
 
+        _container.setBackground(BG_COLOR);
         _container.add(CreateHeaderPanel(), BorderLayout.NORTH);
         _container.add(CreateCenterPanel(), BorderLayout.CENTER);
         _container.add(CreateFooterPanel(), BorderLayout.SOUTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
     }
 
     private JPanel CreateHeaderPanel() {
         JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         headerPanel.setName("Header");
-        headerPanel.setBackground(Color.darkGray);
-        Font myFont = new Font("Verdana", Font.BOLD, 12);
-        Color myColor = new Color(0, 150, 120, 255);
+        headerPanel.setBackground(PANEL_COLOR);
 
         JButton button1 = new JButton("LIDERES POR SALARIO");
-        button1.setBackground(myColor);
+        button1.setBackground(BUTTON_COLOR);
         button1.setFont(myFont);
-        button1.setForeground(Color.white);
+        button1.setForeground(FONT_COLOR);
         button1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GetLeadersBySalary();
@@ -61,9 +62,9 @@ public class ViewQueries extends JFrame {
         });
 
         JButton button2 = new JButton("PROYECTOS POR CIUDAD");
-        button2.setBackground(myColor);
+        button2.setBackground(BUTTON_COLOR);
         button2.setFont(myFont);
-        button2.setForeground(Color.white);
+        button2.setForeground(FONT_COLOR);
         button2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GetProjectsByCity();
@@ -71,39 +72,40 @@ public class ViewQueries extends JFrame {
         });
 
         JButton button3 = new JButton("LIDERES POR NOMBRE");
-        button3.setBackground(myColor);
+        button3.setBackground(BUTTON_COLOR);
         button3.setFont(myFont);
-        button3.setForeground(Color.white);
+        button3.setForeground(FONT_COLOR);
         button3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 GetLeadersByName();
             }
         });
 
-        JButton button4 = new JButton("LIMPIAR DATOS");
-        button4.setBackground(new Color(0, 150, 230, 255));
-        button4.setFont(myFont);
-        button4.setForeground(Color.white);
-        button4.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                _container.getComponent(1).setVisible(false);
-            }
-        });
+        /*
+         * JButton button4 = new JButton("LIMPIAR DATOS"); button4.setBackground(new
+         * Color(249, 46, 46, 255)); button4.setFont(myFont);
+         * button4.setForeground(FONT_COLOR); button4.addActionListener(new
+         * ActionListener() { public void actionPerformed(ActionEvent e) {
+         * _container.getComponent(1).setVisible(false); } });
+         */
 
         headerPanel.add(button1);
         headerPanel.add(button2);
         headerPanel.add(button3);
-        headerPanel.add(button4);
+        // headerPanel.add(button4);
         return headerPanel;
     }
 
     private JPanel CreateCenterPanel() {
-        JPanel centerPanel = new JPanel(new FlowLayout());
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setName("Content");
-        centerPanel.setPreferredSize(new Dimension(600, 400));
+        centerPanel.setPreferredSize(new Dimension(500, 500));
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        centerPanel.setBackground(BG_COLOR);
+
         Object data[][] = new Object[0][0];
         columns = new String[] { "", "", "", "" };
-
         contentTable = new JTable(data, columns);
         contentTable.setGridColor(Color.GRAY);
         contentTable.setAutoResizeMode(4);
@@ -112,11 +114,26 @@ public class ViewQueries extends JFrame {
         JTableHeader header = contentTable.getTableHeader();
         header.setFont(new Font("Verdana", Font.BOLD, 12));
         header.setForeground(Color.white);
-        header.setBackground(Color.DARK_GRAY);
+        header.setBackground(PANEL_COLOR);
 
         JScrollPane scrollPane = new JScrollPane(contentTable);
-        scrollPane.setPreferredSize(new Dimension(600, 480));
+        scrollPane.setPreferredSize(new Dimension(500, 450));
+        scrollPane.setBackground(BG_COLOR);
+
+        JButton clearButton = new JButton("LIMPIAR DATOS");
+        clearButton.setBackground(new Color(249, 46, 46, 255));
+        clearButton.setFont(myFont);
+        clearButton.setForeground(FONT_COLOR);
+        clearButton.setAlignmentX(CENTER_ALIGNMENT);
+        clearButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                _container.getComponent(1).setVisible(false);
+            }
+        });
+
         centerPanel.add(scrollPane, BorderLayout.CENTER);
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        centerPanel.add(clearButton, BorderLayout.SOUTH);
         centerPanel.setVisible(false);
         return centerPanel;
     }
@@ -124,10 +141,10 @@ public class ViewQueries extends JFrame {
     private JPanel CreateFooterPanel() {
         JPanel footerPanel = new JPanel(new FlowLayout());
         footerPanel.setName("Footer");
-        footerPanel.setBackground(Color.DARK_GRAY);
-        JLabel author = new JLabel("Autor: Holman Leonardo Alvarez Morales");
+        footerPanel.setBackground(PANEL_COLOR);
+        JLabel author = new JLabel("AUTOR: Holman Leonardo Alvarez Morales");
         author.setFont(new Font("Verdana", Font.BOLD, 14));
-        author.setForeground(Color.white);
+        author.setForeground(FONT_COLOR);
         footerPanel.add(author);
         return footerPanel;
     }
